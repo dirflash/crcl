@@ -15,6 +15,7 @@ jobs:
         run: echo "$GITHUB_EVENT_PATH"
       - name: checkout repo content
         uses: actions/checkout@v2
+        run: 'echo "payload: ${{ toJson(github.event.client_payload) }}"'
       - name: setup python
         uses: actions/setup-python@v2
         with:
