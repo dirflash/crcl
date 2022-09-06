@@ -2,7 +2,7 @@ name: crcl-dispatch
 
 # Controls when the action will run. Triggers the workflow on push request, or repository dispatch
 on:
-  repository_dispatch:
+  workflow_dispatch:
     types: [CRCL_Run]
 jobs:
   build:
