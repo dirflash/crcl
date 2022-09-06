@@ -13,8 +13,8 @@ jobs:
     steps:
       - name: client-payload
         run: |
-          echo "$env:GITHUB_EVENT_PATH"
-          echo "${{ github.event.client_payload.event_type }}"
+          echo $env:GITHUB_EVENT_PATH
+          echo $env:github.event.client_payload.event_type
       - name: checkout repo content
         uses: actions/checkout@v2
       - name: setup python
