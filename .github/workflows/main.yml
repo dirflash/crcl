@@ -12,9 +12,8 @@ jobs:
     environment: crcl_enviro
     steps:
       - name: client-payload
-        run: |
-          echo $env:GITHUB_EVENT_PATH
-          echo $env:github.event.client_payload.event_type
+        if: runner.os != 'Windows'
+        run: echo "The operating system on the runner is not Windows, it's $RUNNER_OS."
       - name: checkout repo content
         uses: actions/checkout@v2
       - name: setup python
