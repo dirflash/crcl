@@ -12,7 +12,7 @@ jobs:
     environment: crcl_enviro
     steps:
       - name: client-payload
-        run: 'echo ${{ github.event.client_payload.event_type }}'
+        run: 'echo "${{ github.event.client_payload.event_type }}"'
       - name: checkout repo content
         uses: actions/checkout@v2
       - name: setup python
