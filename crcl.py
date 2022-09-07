@@ -10,7 +10,11 @@ __license__ = "MIT License"
 import configparser
 import os
 import pandas as pd
+from time import time, sleep
 import requests
+import certifi
+from pymongo import MongoClient
+from pymongo.errors import ConnectionFailure
 
 KEY = "CI"
 if os.getenv(KEY):
