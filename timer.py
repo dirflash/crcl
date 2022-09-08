@@ -8,8 +8,9 @@ class TimerError(Exception):
 
 
 class Timer:
-    def __init__(self):
+    def __init__(self, text="Elapsed time: {:0.4f} seconds."):
         self._start_time = None
+        self.text = text
 
     def start(self):
         """Start a new timer"""
@@ -25,4 +26,4 @@ class Timer:
 
         elapsed_time = time.perf_counter() - self._start_time
         self._start_time = None
-        print(f"Elapsed time: {elapsed_time:0.4f} seconds")
+        print(self.text.format(elapsed_time))

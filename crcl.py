@@ -79,6 +79,7 @@ output = open("test.xlsb", "wb")
 output.write(response.content)
 output.close()
 
+t = Timer(text="Pandas took {:.4f} seconds to read the file.")
 t.start()
 df = pd.read_excel(
     "test.xlsb", engine="pyxlsb", sheet_name="Powered by Cisco Ready", header=3

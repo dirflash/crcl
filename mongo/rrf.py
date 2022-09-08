@@ -1,6 +1,12 @@
 """ rapid request filter """
 
 import logging
+from datetime import datetime
+from pymongo.errors import ConnectionFailure
+
+
+def main():
+    raise Exception("This package cannot run without being called.")
 
 
 def new_recs(recs):
@@ -18,24 +24,55 @@ def new_recs(recs):
 
 
 def check_prep(recs, collect):
+    """Create list of dicts of Mongo records
+
+    Args:
+        recs (str): Mongo DB record IDs
+        collect (str): Mongo DB connection URL
+
+    Returns:
+        list: List of dicts of Mongo records
+    """
     dup_check = []
     for rec in recs:
         step = collect.find_one(rec)
-        rec = step["_id"]
+        recd = step["_id"]
         ts = step["TS"]
         pid = step["PID"]
         rid = step["RID"]
         aid = step["AID"]
-        dup_check.append({"id": rec, "ts": ts, "pid": pid, "rid": rid, "aid": aid})
+        if isinstance(ts, str):
+            ts = conv_ts(collect, recd, ts)
+        dup_check.append({"id": recd, "ts": ts, "pid": pid, "rid": rid, "aid": aid})
     return dup_check
+
+
+def conv_ts(ts_collect, ts_recd, ts_str):
+    """If Mongo record timestamp is string type, convert it to datetime.
+
+    Args:
+        ts_collect (str): Mongo DB connection URL
+        ts_recd (str): Mongo DB record ID
+        ts_str (str): timestamp record to be converted
+
+    Returns:
+        datetime: converted timestamp
+    """
+    mydate = datetime.strptime(ts_str, "%Y-%m-%dT%H:%M:%S.%f%z")
+    ts_collect.update_one({"_id": ts_recd}, {"$set": {"TS": mydate}})
+    return mydate
 
 
 def rapid_filter(records, mon_col):
     rec_ids = new_recs(records)
     dup_prep = check_prep(rec_ids, mon_col)
+    print(dup_prep)
     sample_size = len(dup_prep)
     print(sample_size)
 
+
+if __name__ == "__main__":
+    main()
 
 """
 
