@@ -12,7 +12,8 @@ import os
 import sys
 import logging
 import pandas as pd
-from time import time, sleep
+from time import time, sleep, perf_counter
+from timer import Timer
 import requests
 import certifi
 from pymongo import MongoClient
@@ -55,6 +56,8 @@ Mongo_Client = MongoClient(
 db = Mongo_Client[mongodb]
 collection = db[mongocollect]
 
+
+t = Timer()
 new_record = collection.find({"response": {"$exists": False}})
 num_records = collection.count_documents({"response": {"$exists": False}})
 
@@ -76,9 +79,12 @@ output = open("test.xlsb", "wb")
 output.write(response.content)
 output.close()
 
+t.start()
 df = pd.read_excel(
     "test.xlsb", engine="pyxlsb", sheet_name="Powered by Cisco Ready", header=3
 )
+t.stop()
+
 df1 = pd.DataFrame(df)
 
 labels = [title for title in df.columns]
