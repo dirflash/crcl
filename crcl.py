@@ -56,10 +56,12 @@ Mongo_Client = MongoClient(
 db = Mongo_Client[mongodb]
 collection = db[mongocollect]
 
-
 t = Timer()
-new_record = collection.find({"response": {"$exists": False}})
-num_records = collection.count_documents({"response": {"$exists": False}})
+
+logging.info("------------------------------------------------------")
+
+new_record = collection.find({"DUP": "Null"})
+num_records = collection.count_documents({"DUP": "Null"})
 
 rrf.rapid_filter(new_record, collection)
 
