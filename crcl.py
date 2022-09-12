@@ -11,8 +11,6 @@ import configparser
 import os
 import sys
 import logging
-import pandas as pd
-import requests
 import certifi
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
