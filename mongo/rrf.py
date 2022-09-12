@@ -85,7 +85,7 @@ def dup_check(r_cnt, pre_list):
                 pid_dup = pre_list[x]["pid"] == pre_list[z]["pid"]
                 rid_dup = pre_list[x]["rid"] == pre_list[z]["rid"]
                 if pid_dup == rid_dup:
-                    if (pre_list[x]["ts"] - pre_list[z]["ts"]) < timedelta(minutes=30):
+                    if (pre_list[x]["ts"] - pre_list[z]["ts"]) < timedelta(seconds=30):
                         print(f"{z} is a duplicate.")
                         p_idx.append(z_id)
     return p_idx
