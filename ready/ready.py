@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+"""This module uses the attachment ID to download the Cisco Ready Report and place it in a local
+    temp folder for evaluation."""
+
+__author__ = "Aaron Davis"
+__version__ = "0.1.5"
+__copyright__ = "Copyright (c) 2022 Aaron Davis"
+__license__ = "MIT License"
+
 import logging
 from requests import request
 

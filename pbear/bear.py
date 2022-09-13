@@ -1,3 +1,13 @@
+#!/usr/bin/env python3
+"""This module imports the local version of the Cisco Ready Report, re-formats the contract
+    number and contract end-date. Then it creates a new data frame that will be used for
+    the response."""
+
+__author__ = "Aaron Davis"
+__version__ = "0.1.5"
+__copyright__ = "Copyright (c) 2022 Aaron Davis"
+__license__ = "MIT License"
+
 import os
 import pandas as pd
 from timer import Timer

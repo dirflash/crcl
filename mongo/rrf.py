@@ -1,3 +1,12 @@
+#!/usr/bin/env python3
+"""This module is used check all the new Mongo DB records to make sure there are no duplicates,
+    before responding."""
+
+__author__ = "Aaron Davis"
+__version__ = "0.1.5"
+__copyright__ = "Copyright (c) 2022 Aaron Davis"
+__license__ = "MIT License"
+
 """ rapid request filter """
 
 import logging
