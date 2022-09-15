@@ -62,6 +62,8 @@ logging.info("------------------------------------------------------")
 new_record = collection.find({"DUP": "Null"})
 num_records = collection.count_documents({"DUP": "Null"})
 
-rrf.rapid_filter(new_record, collection)
+resp_records = collection.find({"RESP": {"$exists": False}})
+
+rrf.rapid_filter(new_record, resp_records, collection)
 unique_recs = rdy.report(collection, webex_bearer)
-bear.pbear(unique_recs)
+bear.pbear(unique_recs, collection)

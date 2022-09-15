@@ -26,6 +26,7 @@ def new_recs(recs):
     Returns:
         list: document _id's
     """
+
     record_ids = [record.get("_id") for record in recs]
     logging.info("Database entries before rapid request filter: %s", len(record_ids))
     return record_ids
@@ -52,8 +53,20 @@ def check_prep(recs, collect):
         dup = step["DUP"]
         if isinstance(ts, str):
             ts = conv_ts(collect, recd, ts)
+        if "RESP" in step:
+            resp = step["RESP"]
+        else:
+            resp = "Null"
         dup_check.append(
-            {"id": recd, "ts": ts, "pid": pid, "rid": rid, "aid": aid, "dup": dup}
+            {
+                "id": recd,
+                "ts": ts,
+                "pid": pid,
+                "rid": rid,
+                "aid": aid,
+                "dup": dup,
+                "resp": resp,
+            }
         )
     return dup_check
 
@@ -95,7 +108,7 @@ def dup_check(r_cnt, pre_list):
                 rid_dup = pre_list[x]["rid"] == pre_list[z]["rid"]
                 if pid_dup == rid_dup:
                     if (pre_list[x]["ts"] - pre_list[z]["ts"]) < timedelta(seconds=30):
-                        print(f"{z} is a duplicate.")
+                        logging.info("Database entry %s is a duplicate.", z)
                         p_idx.append(z_id)
     return p_idx
 
@@ -118,11 +131,12 @@ def dup_edits(mon, dup_ids, data_list):
         mon.update_one({"_id": rd}, {"$set": {"DUP": False}})
     for rd in dup_ids:
         mon.update_one({"_id": rd}, {"$set": {"DUP": True}})
+        mon.update_one({"_id": rd}, {"$set": {"RESP": True}})
     logging.info("Duplicate database entries: %s", len(dup_ids))
     logging.info("Unique database entries: %s", len(go_obj))
 
 
-def rapid_filter(records, mon_col):
+def rapid_filter(records, r_recs, mon_col):
     rec_ids = new_recs(records)
     dup_prep = check_prep(rec_ids, mon_col)
     record_count = len(dup_prep)

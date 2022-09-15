@@ -9,6 +9,7 @@ __copyright__ = "Copyright (c) 2022 Aaron Davis"
 __license__ = "MIT License"
 
 import os
+import logging
 import pandas as pd
 from timer import Timer
 
@@ -26,9 +27,6 @@ def prep(ob_id, attch):
     df1 = p_contract(df1)
     df2 = p_filter(df1)
     df2a = p_format(df2)
-    print(df2a["Install Site Name"].loc[0])
-    print(df2a[["Contract Number"]])
-    print(df2a.shape)
     os.remove(file)
     return df2a
 
@@ -74,13 +72,18 @@ def p_format(df):
     return df
 
 
-def pbear(recs):
+def pbear(recs, mon):
     for rec in recs:
         recd = rec["id"]
         rid = rec["rid"]
         aid = rec["aid"]
         # resp = rec["RESP"]
-        prep(recd, aid)
+        df = prep(recd, aid)
+        logging.info("Data frame response for room ID: %s", rid)
+        print(df["Install Site Name"].loc[0])
+        print(df[["Contract Number"]])
+        print(df.shape)
+        mon.update_one({"_id": recd}, {"$set": {"RESP": True}})
     return
 
 
